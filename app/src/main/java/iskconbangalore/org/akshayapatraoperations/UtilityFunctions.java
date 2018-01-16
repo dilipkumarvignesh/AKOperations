@@ -22,7 +22,6 @@ public static String getDate()
 public static String getTime()
 {
 
-    String time = "";
     SimpleDateFormat currentTime = new SimpleDateFormat(" HH:mm:ss");
     Date now = new Date();
     String formattedDate = currentTime.format(now);
