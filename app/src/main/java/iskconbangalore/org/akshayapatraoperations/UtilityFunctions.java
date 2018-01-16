@@ -1,5 +1,8 @@
 package iskconbangalore.org.akshayapatraoperations;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
@@ -28,5 +31,17 @@ public static String getTime()
     return formattedDate;
 
 }
+
+public static void showLoader(Context ctxt)
+{
+
+
+    ProgressDialog progress = new ProgressDialog(ctxt);
+    progress.setTitle("Loading");
+    progress.setMessage("Wait while loading...");
+    progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+    progress.show();
+}
+
 
 }

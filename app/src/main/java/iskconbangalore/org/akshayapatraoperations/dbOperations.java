@@ -37,7 +37,7 @@ public class dbOperations {
         String time = UtilityFunctions.getTime();
         Log.d("info","TimeValue:"+time);
         DatabaseReference todayDateNode = FirebaseDatabase.getInstance().getReference(toDate);
-        todayDateNode.child("BangaloreRoute1").child("SchoolName1").setValue(new DeliveryOperation("12.433",time));
+        todayDateNode.child(Route).child(School).setValue(new DeliveryOperation("12.433",time));
 
     }
 

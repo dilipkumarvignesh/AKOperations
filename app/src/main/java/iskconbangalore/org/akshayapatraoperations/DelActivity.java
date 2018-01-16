@@ -1,6 +1,7 @@
 package iskconbangalore.org.akshayapatraoperations;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -218,6 +219,7 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
                 // Whatever
 
                 Log.d("info", "swipeLeft = " + "True");
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
                next_school();
 
@@ -285,11 +287,16 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
         Log.d("info","LocationRoute:"+finalValue);
         DatabaseReference ref = database.getReference(finalValue);
         final Context delActivity = this;
-
+        final ProgressDialog progress = new ProgressDialog(delActivity);
+        progress.setTitle("Loading");
+        progress.setMessage("Please Wait...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
         // Attach a listener to read the data at our posts reference
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
             //    Log.d("info","Datasnapshot:"+dataSnapshot.getChildren());
                 for (DataSnapshot routeSnapShot : dataSnapshot.getChildren()) {
 
@@ -305,6 +312,7 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
 
                 }
             schoolSize = schoolData.size();
+            progress.dismiss();
             Toast.makeText(delActivity,"All Data Downloaded:"+schoolData.size(),Toast.LENGTH_LONG).show();
                 setSchoolDataUi();
             }
@@ -616,7 +624,8 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
             {
                 Log.d("info","Delivery Button Clicked");
                 Toast.makeText(this,"Delivery Submitted",Toast.LENGTH_LONG).show();
-                dbOperations.writeDate(RouteValue+LocationValue,"DEF","Delivered");
+                SchoolData school = schoolData.get(i);
+                dbOperations.writeDate(LocationValue+RouteValue,school.School,"Delivered");
             }
         }
     }
