@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "7401840375",
+    "firebase_url": "https://akshaypatra-operations.firebaseio.com",
+    "project_id": "akshaypatra-operations",
+    "storage_bucket": "akshaypatra-operations.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7401840375:android:22e8867dc501398a",
+        "android_client_info": {
+          "package_name": "iskconbangalore.org.akshayapatraoperations"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7401840375-bvnrf15hs646f47c2aaff18l6u4mkoqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "iskconbangalore.org.akshayapatraoperations",
+            "certificate_hash": "f3599cedd53511d9d2000e3a57d050ff33b97ff3"
+          }
+        },
+        {
+          "client_id": "7401840375-8bjocl0jgkb9khm9e8kl46t2ar6urfod.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3uWVJj9TzSFVjK4xmbldlqu-I_5cNt3A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7401840375-8bjocl0jgkb9khm9e8kl46t2ar6urfod.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
