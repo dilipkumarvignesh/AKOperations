@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -628,5 +629,13 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
                 dbOperations.writeDate(LocationValue+RouteValue,school.School,"Delivered");
             }
         }
+
+
+    }
+    public void openGMaps(String lat,String lon){
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lon);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 }
