@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -205,6 +207,8 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
         btn_location = (Button) findViewById(R.id.btn_detect_fused_location);
         btn_delivery = (Button)findViewById(R.id.submitDelivery);
         btn_delivery.setOnClickListener(this);
+        Button gMaps = (Button) findViewById(R.id.openGMap);
+        gMaps.setOnClickListener(this);
         //total six textviews
         txt_location = (TextView) findViewById(R.id.txt_location);
         mLatitudeTextView = (TextView) findViewById(R.id.mLatitudeTextView);
@@ -221,14 +225,15 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
 
                 Log.d("info", "swipeLeft = " + "True");
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-
-               next_school();
-
+                if(i<schoolSize) {
+                    next_school();
+                }
             }
 
             public void onSwipeRight(){
-
-                previous_school();
+                if(i>0) {
+                    previous_school();
+                }
             }
         });
 //        mLastUpdateTimeTextView = (TextView) findViewById(R.id.mLastUpdateTimeTextView);
@@ -294,7 +299,7 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
         progress.show();
         // Attach a listener to read the data at our posts reference
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -328,19 +333,24 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
     }
     public void setSchoolDataUi()
     {
+        if(i<schoolSize) {
+            SchoolData school = schoolData.get(i);
+            SchoolName.setText(school.School);
+            Quantity.setText(school.Quantity);
+            TempQuantity.setText(school.TempQuantity);
 
-        SchoolData school = schoolData.get(i);
-        SchoolName.setText(school.School);
-        Quantity.setText(school.Quantity);
-        TempQuantity.setText(school.TempQuantity);
 
+            Log.d("info", "UiSchool:" + schoolSize);
 
-        Log.d("info","UiSchool:"+schoolSize);
+        }
+
+    }
+
+    public void setProgIndicator()
+    {
         float percentCompleted = (i*100)/schoolSize;
         Log.d("info","PercentageCompleted:"+percentCompleted);
         progressIndicator.setProgress((int) percentCompleted);
-
-
     }
     //step 1
     protected synchronized void buildGoogleApiClient() {
@@ -624,15 +634,39 @@ public class DelActivity extends AppCompatActivity implements View.OnClickListen
             case R.id.submitDelivery:
             {
                 Log.d("info","Delivery Button Clicked");
-                Toast.makeText(this,"Delivery Submitted",Toast.LENGTH_LONG).show();
+
+
+
+
+                if(i<schoolSize) {
+                    SchoolData school = schoolData.get(i);
+                    dbOperations.writeDate(LocationValue+RouteValue,school.School,"Delivered");
+                    Toast.makeText(this,"Delivery Submitted",Toast.LENGTH_LONG).show();
+                    i++;
+                    setSchoolDataUi();
+
+                }
+                else
+                {
+                    Toast.makeText(this,"All Deliveries Completed",Toast.LENGTH_LONG).show();
+                }
+                if(i<=schoolSize)
+                {
+                    setProgIndicator();
+                }
+            break;
+            }
+            case R.id.openGMap:{
                 SchoolData school = schoolData.get(i);
-                dbOperations.writeDate(LocationValue+RouteValue,school.School,"Delivered");
+                openGMaps("13.0098","77.5510");
+                break;
             }
         }
 
 
     }
     public void openGMaps(String lat,String lon){
+
         Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lon);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
